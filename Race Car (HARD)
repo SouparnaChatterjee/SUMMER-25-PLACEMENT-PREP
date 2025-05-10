@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int racecar(int target) {
+        queue<tuple<long long, long long, int>> q; // position, speed, steps
+        unordered_set<string> visited;
+        q.push({0, 1, 0});
+        
+        while (!q.empty()) {
+            auto [pos, speed, steps] = q.front();
+            q.pop();
+
+            if (pos == target) return steps;
+
+            string state = to_string(pos) + "," + to_string(speed);
+            if (visited.count(state)) continue;
+            visited.insert(state);
+
+            // Accelerate
+            long long newPos = pos + speed;
+            long long newSpeed = speed * 2;
+
+            if (abs(newPos) <= 2 * target)  // pruning to keep BFS reasonable
+                q.push({newPos, newSpeed, steps + 1});
+
+            // Reverse
+            long long revSpeed = speed > 0 ? -1 : 1;
+            q.push({pos, revSpeed, steps + 1});
+        }
+        return -1;
+    }
+};
