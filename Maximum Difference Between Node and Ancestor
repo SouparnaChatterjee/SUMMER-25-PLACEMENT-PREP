@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int maxAncestorDiff(TreeNode* root) {
+    //if(root==NULL)    return 0;
+    return dfs(root, root->val, root->val);// value, say 0 to 8 so difference of 8
+    }
+private:
+    int dfs(TreeNode* root, int maxi, int mini)
+    {
+     if(root==NULL) return maxi-mini;
+     mini=min(mini, root->val);
+     maxi=max(maxi,root->val);
+     int leftD=dfs(root->left, maxi, mini);
+     int rightD=dfs(root->right,maxi, mini);
+     return max(leftD, rightD);
+    }
+};
